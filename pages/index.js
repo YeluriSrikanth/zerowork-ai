@@ -1,72 +1,92 @@
-<<<<<<< HEAD
-export default function Home(){return <h1>ZeroWork AI Ready</h1>}
-=======
-import React, { useState } from "react";
+import { useState } from "react";
 
-export default function HomePage() {
-  const [messages, setMessages] = useState([
-    { text: "Hi 👋 I’m your AI assistant. Tell me your business need.", bot: true }
+export default function Home() {
+  const [msg, setMsg] = useState("");
+  const [chat, setChat] = useState([
+    { role: "bot", text: "👋 Welcome to ZeroWork AI. Tell me your business need." }
   ]);
-  const [input, setInput] = useState("");
 
-  const phoneNumber = "918919812822";
+  const send = () => {
+    if (!msg) return;
 
-  const getAIResponse = async (msg) => {
-    const text = msg.toLowerCase();
+    setChat([...chat, { role: "user", text: msg }]);
 
-    if (text.includes("price")) return "Pricing depends on your project. Let's discuss on WhatsApp 💰";
-    if (text.includes("automation")) return "We automate your business using AI systems 🤖";
-    if (text.includes("app")) return "We build Android apps with AI integration 📱";
+    setTimeout(() => {
+      setChat(prev => [
+        ...prev,
+        {
+          role: "bot",
+          text: "🚀 We build AI systems that bring clients automatically. Click WhatsApp below to start."
+        }
+      ]);
+    }, 500);
 
-    return "Great! I understand your requirement. Let’s connect on WhatsApp for details 🚀";
-  };
-
-  const saveLead = (msg) => {
-    const leads = JSON.parse(localStorage.getItem("leads") || "[]");
-    leads.push({ message: msg, date: new Date().toISOString() });
-    localStorage.setItem("leads", JSON.stringify(leads));
-  };
-
-  const sendMessage = async () => {
-    if (!input) return;
-
-    const reply = await getAIResponse(input);
-
-    setMessages([
-      ...messages,
-      { text: input, bot: false },
-      { text: reply, bot: true }
-    ]);
-
-    saveLead(input);
-
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent("New Lead: " + input)}`;
-    window.open(url, "_blank");
-
-    setInput("");
+    setMsg("");
   };
 
   return (
-    <div style={{background:"black", color:"white", minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
-      <h1>AI Client System</h1>
+    <div style={{
+      background: "linear-gradient(135deg,#000,#0a0a0a)",
+      color: "white",
+      minHeight: "100vh",
+      textAlign: "center",
+      padding: "40px",
+      fontFamily: "Arial"
+    }}>
 
-      <div style={{width:300, background:"#111", padding:10}}>
-        <div style={{height:200, overflowY:"auto"}}>
-          {messages.map((m,i)=>(
-            <div key={i} style={{margin:5, padding:5, background:m.bot?"#222":"green"}}>
-              {m.text}
-            </div>
+      <h1 style={{ fontSize: "42px" }}>ZeroWork AI</h1>
+      <p style={{ opacity: 0.7 }}>
+        AI Systems That Get You Clients Automatically
+      </p>
+
+      <a
+        href="https://wa.me/918919812822"
+        target="_blank"
+        style={{
+          background: "#25D366",
+          padding: "12px 25px",
+          display: "inline-block",
+          marginTop: "20px",
+          borderRadius: "8px",
+          color: "white",
+          textDecoration: "none"
+        }}
+      >
+        Chat on WhatsApp
+      </a>
+
+      <div style={{
+        marginTop: "40px",
+        maxWidth: "400px",
+        marginInline: "auto",
+        background: "#111",
+        padding: "20px",
+        borderRadius: "10px"
+      }}>
+        <div style={{ minHeight: "150px", textAlign: "left" }}>
+          {chat.map((c, i) => (
+            <p key={i} style={{ opacity: 0.8 }}>
+              <b>{c.role === "bot" ? "AI" : "You"}:</b> {c.text}
+            </p>
           ))}
         </div>
 
-        <input value={input} onChange={(e)=>setInput(e.target.value)} />
-        <button onClick={sendMessage}>Send</button>
+        <input
+          value={msg}
+          onChange={(e) => setMsg(e.target.value)}
+          placeholder="Type your message..."
+          style={{ width: "70%", padding: "8px" }}
+        />
+        <button onClick={send} style={{ padding: "8px 15px" }}>
+          Send
+        </button>
       </div>
 
-      <p>Email: futurewrites@gmail.com</p>
-      <p>Phone: +91 8919812822</p>
-      <p>© 2026 Srikanth Yeluri</p>
+      <p style={{ marginTop: "40px", opacity: 0.6 }}>
+        futurewrites@gmail.com<br />
+        Phone: +91 8919812822<br />
+        © 2026 Srikanth Yeluri
+      </p>
     </div>
   );
 }
->>>>>>> eacd037ccb767757688bb699664125bf7d6ce060
